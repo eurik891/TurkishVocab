@@ -1,0 +1,1068 @@
+
+<!--{
+ File : " indexname.html": -->
+ "<!トDOCTYPEル htmlコ>
+語<html単 lang語="管理ja",
+">
+ <head ">
+short _name <":meta " charsetTur="kishUTFV-ocab8",
+"  />
+ " start <_urlmeta": name "./="",
+viewport " " contentscope="":width "./=device",
+-width , " initialdisplay-scale":= "1stand,alone viewport",
+-fit = "coverbackground"_color />
+":  "# <fmeta6 namef="8themefc-color",
+"  content "="#theme0_colorf":766 "#e0"f />
+766 e <",
+meta  name "="descriptionapple":-mobile "-webト-appル-capコable語"の content単="語yesを"管理 />
+し 、 <Gemmetaini name無料="枠appleで-mobile意味-web取得-appでき-statusる-barP-styleWA""
+ content}
+="```black-translucent" />
+  <title>トルコ語単語管理</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --panel: rgba(255, 255, 255, 0.94);
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #dbe3ee;
+      --accent: #0f766e;
+      --accent-2: #2563eb;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --soft: #eef4fb;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 34%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 26%),
+        var$--bg$;
+      color: var$--text$;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 16px;
+      padding-bottom: 28px;
+    }
+
+    header {
+      margin-bottom: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 34px);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var$--muted$;
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 16px;
+    }
+
+    .stat {
+      background: var$--panel$;
+      border: 1px solid var$--border$;
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: var$--shadow$;
+    }
+
+    .stat .label {
+      font-size: 12px;
+      color: var$--muted$;
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .panel {
+      background: var$--panel$;
+      border: 1px solid var$--border$;
+      border-radius: 22px;
+      box-shadow: var$--shadow$;
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-panel {
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .section-head .muted {
+      font-size: 13px;
+      color: var$--muted$;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.7fr 0.7fr auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 2px;
+      color: var$--text$;
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var$--accent$;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var$--muted$;
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var$--border$;
+      border-radius: 14px;
+      padding: 12px 13px;
+      font: inherit;
+      color: var$--text$;
+      background: #fff;
+      outline: none;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(15, 118, 110, 0.55);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+    }
+
+    .note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var$--muted$;
+      line-height: 1.45;
+      min-height: 1.2em;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font: inherit;
+      font-weight: 700;
+      color: #fff;
+      background: var$--accent$;
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button.secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var$--accent$;
+      border: 1px solid rgba(15, 118, 110, 0.25);
+    }
+
+    button.danger {
+      background: var$--danger$;
+    }
+
+    button.small {
+      padding: 9px 12px;
+      font-size: 13px;
+      border-radius: 12px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: progress;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .toolbar-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      gap: 12px;
+    }
+
+    .status {
+      margin-top: 2px;
+      min-height: 1.2em;
+      font-size: 13px;
+      color: var$--muted$;
+      line-height: 1.5;
+    }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var$--border$;
+      margin: 14px 0;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card {
+      border: 1px solid var$--border$;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 14px;
+    }
+
+    .card.due {
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 0 0 1px rgba(217, 119, 6, 0.08);
+    }
+
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 20px;
+      word-break: break-word;
+    }
+
+    .card .meaning {
+      color: var$--text$;
+      line-height: 1.55;
+      margin-top: 4px;
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      line-height: 1.55;
+    }
+
+    .card small {
+      display: block;
+      margin-top: 10px;
+      color: var$--muted$;
+      line-height: 1.5;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var$--soft$;
+      color: #1f2937;
+    }
+
+    .badge.accent {
+      background: rgba(15, 118, 110, 0.12);
+      color: #0f766e;
+    }
+
+    .badge.warn {
+      background: rgba(217, 119, 6, 0.12);
+      color: #a16207;
+    }
+
+    .badge.blue {
+      background: rgba(37, 99, 235, 0.12);
+      color: #1d4ed8;
+    }
+
+    .badge.danger {
+      background: rgba(220, 38, 38, 0.12);
+      color: #b91c1c;
+    }
+
+    .empty {
+      border: 1px dashed var$--border$;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+      padding: 18px;
+      color: var$--muted$;
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    .review-box {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-height: 380px;
+      justify-content: space-between;
+    }
+
+    .review-word {
+      font-size: clamp(30px, 5vw, 46px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      margin: 6px 0 8px;
+      word-break: break-word;
+    }
+
+    .review-cover {
+      min-height: 120px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(15, 118, 110, 0.06), rgba(37, 99, 235, 0.04));
+      border: 1px solid var$--border$;
+      color: var$--muted$;
+      font-size: 18px;
+      font-weight: 700;
+      text-align: center;
+      padding: 18px;
+    }
+
+    .right-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .meta-line {
+      color: var$--muted$;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media $max-width: 980px$ {
+      .grid,
+      .stats,
+      .settings-grid,
+      .toolbar-grid,
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .check-row {
+        white-space: normal;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>トルコ語単語管理</h1>
+      <p class="subtitle">
+        スマホ向けの単語帳です。Gemini の無料枠で意味を自動取得し、保存済みデータはオフラインでも表示できます。音声再生にも対応しています。
+      </p>
+    </header>
+
+    <section class="stats" aria-label="統計">
+      <div class="stat">
+        <div class="label">登録数</div>
+        <div class="value" id="statTotal">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">習得済み</div>
+        <div class="value" id="statLearned">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">復習対象</div>
+        <div class="value" id="statDue">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">復習済み</div>
+        <div class="value" id="statReviewed">0</div>
+      </div>
+    </section>
+
+    <section class="panel settings-panel">
+      <div class="section-head">
+        <div>
+          <h2>Gemini設定</h2>
+          <div class="muted">APIキーはこの端末のローカルストレージに保存されます。</div>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div>
+          <label for="apiKey">Gemini APIキー</label>
+          <input id="apiKey" type="password" placeholder="Google AI Studio の APIキー" autocomplete="off" />
+        </div>
+        <div>
+          <label for="modelName">モデル</label>
+          <input id="modelName" type="text" value="gemini-1.5-flash" autocomplete="off" />
+        </div>
+        <div class="check-row">
+          <input id="autoLookup" type="checkbox" checked />
+          <label for="autoLookup" style="margin:0; font-size:14px; color: var$--text$;">入力中に自動取得</label>
+        </div>
+        <div class="actions">
+          <button type="button" class="secondary" id="saveSettingsBtn">設定を保存</button>
+        </div>
+      </div>
+      <div class="note" id="settingsNote">APIキー未設定でも、保存済みの単語はそのまま使えます。</div>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="section-head">
+          <div>
+            <h2 id="formTitle">単語を追加</h2>
+            <div class="muted">トルコ語を入れると、保存済みデータか Gemini から意味を補完します。</div>
+          </div>
+          <button type="button" class="ghost small" id="sampleBtn">サンプル追加</button>
+        </div>
+
+        <form id="wordForm" class="form-grid">
+          <div class="row-2">
+            <div>
+              <label for="turkish">トルコ語</label>
+              <input id="turkish" name="turkish" list="turkishSuggestions" placeholder="merhaba" autocomplete="off" required />
+              <datalist id="turkishSuggestions"></datalist>
+            </div>
+            <div>
+              <label for="meaning">意味</label>
+              <input id="meaning" name="meaning" placeholder="こんにちは" autocomplete="off" required />
+              <div class="note" id="lookupHint">入力すると自動検索します。</div>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div>
+              <label for="pos">品詞・分類</label>
+              <input id="pos" name="pos" placeholder="名詞 / 動詞 / 挨拶 など" autocomplete="off" />
+            </div>
+            <div>
+              <label for="tag">タグ</label>
+              <input id="tag" name="tag" placeholder="基本 / 動詞 / 旅行 など" autocomplete="off" />
+            </div>
+          </div>
+
+          <div>
+            <label for="example">例文</label>
+            <textarea id="example" name="example" placeholder="Merhaba! Nasılsın?"></textarea>
+          </div>
+
+          <div>
+            <label for="memo">メモ</label>
+            <textarea id="memo" name="memo" placeholder="覚え方、発音の注意、関連語など"></textarea>
+          </div>
+
+          <div class="actions">
+            <button type="submit" id="saveBtn">追加する</button>
+            <button type="button" class="secondary" id="lookupBtn">AIで意味取得</button>
+            <button type="button" class="secondary" id="speakBtn">音声</button>
+            <button type="button" class="secondary" id="cancelEditBtn" hidden>編集を解除</button>
+          </div>
+        </form>
+
+        <div class="toolbar">
+          <div class="toolbar-grid">
+            <div>
+              <label for="searchInput">検索</label>
+              <input id="searchInput" type="search" placeholder="単語・意味・タグで検索" />
+            </div>
+            <div>
+              <label for="filterSelect">表示</label>
+              <select id="filterSelect">
+                <option value="all">すべて</option>
+                <option value="due">復習対象のみ</option>
+                <option value="learned">習得済みのみ</option>
+              </select>
+            </div>
+            <div>
+              <label>データ操作</label>
+              <div class="actions">
+                <button type="button" class="secondary small" id="exportBtn">エクスポート</button>
+                <button type="button" class="secondary small" id="importBtn">インポート</button>
+                <button type="button" class="danger small" id="resetBtn">全削除</button>
+              </div>
+              <input id="importFile" type="file" accept="application/json" hidden />
+            </div>
+          </div>
+          <div class="status" id="status"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-head">
+          <div>
+            <h2>単語一覧</h2>
+            <div class="muted" id="resultCount">0件</div>
+          </div>
+        </div>
+        <div id="wordList" class="card-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head">
+          <div>
+            <h2>フラッシュカード</h2>
+            <div class="muted">タップ操作中心。音声再生と復習ボタン付き。</div>
+          </div>
+          <button type="button" class="ghost small" id="nextReviewBtn">次の単語</button>
+        </div>
+
+        <div id="reviewArea"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "turkish_vocab_manager_gemini_v1";
+    const SETTINGS_KEY = "turkish_vocab_settings_v1";
+    const MEANING_CACHE_KEY = "turkish_vocab_meaning_cache_v1";
+
+    const SAMPLE_ENTRIES = [
+      {
+        turkish: "merhaba",
+        meaning: "こんにちは",
+        pos: "挨拶",
+        tag: "基本",
+        example: "Merhaba! Nasılsın?",
+        memo: "会話の最初によく使う。",
+        mastered: false
+      },
+      {
+        turkish: "teşekkürler",
+        meaning: "ありがとう",
+        pos: "感謝表現",
+        tag: "基本",
+        example: "Çok teşekkürler.",
+        memo: "teşekkür ederim もセットで覚える。",
+        mastered: false
+      },
+      {
+        turkish: "öğrenmek",
+        meaning: "学ぶ",
+        pos: "動詞",
+        tag: "学習",
+        example: "Türkçe öğrenmek istiyorum.",
+        memo: "発音は「オーエーレンメク」に近い。",
+        mastered: false
+      }
+    ];
+
+    const DEFAULT_SETTINGS = {
+      apiKey: "",
+      modelName: "gemini-1.5-flash",
+      autoLookup: true
+    };
+
+    const state = {
+      entries: loadEntries(),
+      settings: loadSettings(),
+      meaningCache: loadMeaningCache(),
+      reviewId: null,
+      reviewRevealed: false
+    };
+
+    const formState = {
+      activeWordKey: "",
+      autoFilledMeaning: false
+    };
+
+    const lookupState = {
+      requestId: 0,
+      timer: 0
+    };
+
+    let editingId = null;
+    let statusTimer = null;
+
+    const el = {
+      form: document.getElementById("wordForm"),
+      formTitle: document.getElementById("formTitle"),
+      saveBtn: document.getElementById("saveBtn"),
+      lookupBtn: document.getElementById("lookupBtn"),
+      speakBtn: document.getElementById("speakBtn"),
+      cancelEditBtn: document.getElementById("cancelEditBtn"),
+      turkish: document.getElementById("turkish"),
+      meaning: document.getElementById("meaning"),
+      pos: document.getElementById("pos"),
+      tag: document.getElementById("tag"),
+      example: document.getElementById("example"),
+      memo: document.getElementById("memo"),
+      lookupHint: document.getElementById("lookupHint"),
+      searchInput: document.getElementById("searchInput"),
+      filterSelect: document.getElementById("filterSelect"),
+      wordList: document.getElementById("wordList"),
+      reviewArea: document.getElementById("reviewArea"),
+      resultCount: document.getElementById("resultCount"),
+      status: document.getElementById("status"),
+      statTotal: document.getElementById("statTotal"),
+      statLearned: document.getElementById("statLearned"),
+      statDue: document.getElementById("statDue"),
+      statReviewed: document.getElementById("statReviewed"),
+      sampleBtn: document.getElementById("sampleBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      importBtn: document.getElementById("importBtn"),
+      importFile: document.getElementById("importFile"),
+      resetBtn: document.getElementById("resetBtn"),
+      nextReviewBtn: document.getElementById("nextReviewBtn"),
+      suggestions: document.getElementById("turkishSuggestions"),
+      apiKey: document.getElementById("apiKey"),
+      modelName: document.getElementById("modelName"),
+      autoLookup: document.getElementById("autoLookup"),
+      saveSettingsBtn: document.getElementById("saveSettingsBtn"),
+      settingsNote: document.getElementById("settingsNote")
+    };
+
+    function makeId() {
+      if $window.crypto && typeof window.crypto.randomUUID === "function"$ {
+        return window.crypto.randomUUID();
+      }
+      return `id_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    }
+
+    function localDate$date = new Date()$ {
+      const d = new Date(date);
+      d.setMinutes$d.getMinutes() - d.getTimezoneOffset()$;
+      return d.toISOString().slice(0, 10);
+    }
+
+    function addDays(isoDate, days) {
+      const d = new Date(`${isoDate}T00:00:00`);
+      d.setDate$d.getDate() + days$;
+      return localDate(d);
+    }
+
+    function dateValue(isoDate) {
+      const d = new Date(`${isoDate}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? Number.POSITIVE_INFINITY : d.getTime();
+    }
+
+    function todayValue() {
+      return dateValue(localDate());
+    }
+
+    function fmtDate(isoDate) {
+      if (!isoDate) return "—";
+      const d = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return "—";
+      return new Intl.DateTimeFormat$"ja-JP", { dateStyle: "medium" }$.format(d);
+    }
+
+    function escapeHTML$text = ""$ {
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        "\"": "&quot;",
+        "'": "&#39;"
+      };
+      return String(text).replace$/[&<>"']/g, (ch) => map[ch]$;
+    }
+
+    function normalizeKey$text = ""$ {
+      return String(text)
+        .trim()
+        .normalize("NFKC")
+        .toLocaleLowerCase("tr")
+        .replace$/\s+/g, " "$
+        .replace(/[.,!?;:()"'`~]/g, "")
+        .replace$/\s+/g, " "$
+        .trim();
+    }
+
+    function foldKey$text = ""$ {
+      return normalizeKey(text)
+        .replace(/ç/g, "c")
+        .replace(/ğ/g, "g")
+        .replace(/ı/g, "i")
+        .replace(/ö/g, "o")
+        .replace(/ş/g, "s")
+        .replace(/ü/g, "u")
+        .replace(/İ/g, "i");
+    }
+
+    function guessCandidates(word) {
+      const base = normalizeKey(word);
+      const candidates = new Set();
+      if (!base) return [];
+
+      candidates.add(base);
+      candidates.add(foldKey(base));
+
+      const suffixes = [
+        "ler",
+        "lar",
+        "dir",
+        "dır",
+        "dur",
+        "dür",
+        "tir",
+        "tır",
+        "tur",
+        "tür",
+        "im",
+        "ım",
+        "um",
+        "üm",
+        "sin",
+        "sın",
+        "sun",
+        "sün",
+        "miz",
+        "mız",
+        "muz",
+        "müz",
+        "iniz",
+        "ınız",
+        "unuz",
+        "ünüz",
+        "de",
+        "da",
+        "te",
+        "ta",
+        "den",
+        "dan",
+        "ten",
+        "tan"
+      ];
+
+      for (const sfx of suffixes) {
+        if $base.length > sfx.length + 2 && base.endsWith(sfx)$ {
+          const stripped = base.slice$0, -sfx.length$;
+          candidates.add(stripped);
+          candidates.add(foldKey(stripped));
+        }
+      }
+
+      return [...candidates].filter(Boolean);
+    }
+
+    function loadEntries() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        const source = Array.isArray(parsed)
+          ? parsed
+          : Array.isArray(parsed?.entries)
+            ? parsed.entries
+            : [];
+        return source.map(normalizeEntry).filter(Boolean);
+      } catch {
+        return [];
+      }
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return { ...DEFAULT_SETTINGS };
+        const parsed = JSON.parse(raw);
+        return {
+          ...DEFAULT_SETTINGS,
+          ...$parsed && typeof parsed === "object" ? parsed : {}$
+        };
+      } catch {
+        return { ...DEFAULT_SETTINGS };
+      }
+    }
+
+    function loadMeaningCache() {
+      try {
+        const raw = localStorage.getItem(MEANING_CACHE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveEntries() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.entries));
+    }
+
+    function saveSettings() {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(state.settings));
+      renderSettingsNote();
+    }
+
+    function saveMeaningCache() {
+      localStorage.setItem(MEANING_CACHE_KEY, JSON.stringify(state.meaningCache));
+    }
+
+    function setStatus(message) {
+      el.status.textContent = message;
+      clearTimeout(statusTimer);
+      statusTimer = window.setTimeout(() => {
+        el.status.textContent = "";
+      }, 2600);
+    }
+
+    function renderSettingsNote() {
+      const hasKey = Boolean(state.settings.apiKey.trim());
+      const auto = state.settings.autoLookup ? "ON" : "OFF";
+      el.settingsNote.textContent = hasKey
+        ? `APIキーはこの端末に保存されています。自動取得: ${auto}`
+        : "APIキー未設定でも、保存済みの単語はそのまま使えます。";
+    }
+
+    function normalizeEntry(item) {
+      if $!item || typeof item !== "object"$ return null;
+
+      const turkish = String(item.turkish ?? "").trim();
+      const meaning = String(item.meaning ?? "").trim();
+      if (!turkish || !meaning) return null;
+
+      return {
+        id: item.id || makeId(),
+        turkish,
+        meaning,
+        pos: String(item.pos ?? "").trim(),
+        tag: String(item.tag ?? "").trim(),
+        example: String(item.example ?? "").trim(),
+        memo: String(item.memo ?? "").trim(),
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString(),
+        dueDate: item.dueDate || localDate(),
+        intervalDays: Number.isFinite(Number(item.intervalDays)) ? Number(item.intervalDays) : 0,
+        ease: Number.isFinite(Number(item.ease)) ? Number(item.ease) : 2.3,
+        reviewCount: Number.isFinite(Number(item.reviewCount)) ? Number(item.reviewCount) : 0,
+        mastered: Boolean(item.mastered)
+      };
+    }
+
+    function isMastered(entry) {
+      return Boolean(entry.mastered);
+    }
+
+    function isDue(entry) {
+      if (isMastered(entry)) return false;
+      return dateValue(entry.dueDate) <= todayValue();
+    }
+
+    function sortEntries(a, b) {
+      const dueA = isDue(a) ? 0 : 1;
+      const dueB = isDue(b) ? 0 : 1;
+      if $dueA !== dueB$ return dueA - dueB;
+
+      const dateA = dateValue(a.dueDate);
+      const dateB = dateValue(b.dueDate);
+      if $dateA !== dateB$ return dateA - dateB;
+
+      return (a.turkish || "").localeCompare(b.turkish || "", "tr");
+    }
+
+    function pickReviewTarget() {
+      const sorted = [...state.entries].sort(sortEntries);
+      return sorted[0] || null;
+    }
+
+    function getMeaningPackageFromEntry(entry) {
+      if (!entry) return null;
+      return {
+        meaning: entry.meaning || "",
+        pos: entry.pos || "",
+        notes: entry.memo || "",
+        example: entry.example || "",
+        source: "entry"
+      };
+    }
+
+    function getLocalMeaningPackage(word) {
+      const keys = guessCandidates(word);
+
+      for (const key of keys) {
+        if (state.meaningCache[key]) {
+          return {
+            ...state.meaningCache[key],
+            source: "cache"
+          };
+        }
+      }
+
+      for (const key of keys) {
+        const found = state.entries.find((entry) => {
+          const entryKeys = new Set(guessCandidates(entry.turkish));
+          return entryKeys.has(key);
+        });
+
+        if (found) {
+          return getMeaningPackageFromEntry(found);
+        }
+      }
+
+      return null;
+    }
+
+    function storeMeaningPackage(word, packageData) {
+      const payload = {
+        meaning: String(packageData.meaning ?? "").trim(),
+        pos: String(packageData.pos ?? "").trim(),
+        notes: String(packageData.notes ?? "").trim(),
+        example: String(packageData.example ?? "").trim(),
+        base_form: String(packageData.base_form ?? "").trim(),
+        source: String(packageData.source ?? "gemini"),
+        fetchedAt: new Date().toISOString()
+      };
+
+      const keys = new Set();
+
+      const addKeys = (text) => {
+        if (!text) return;
+        for (const key of guessCandidates(text)) {
+          keys.add(key);
+        }
+      };
+
+      addKeys(word);
+      addKeys(payload.base_form);
+
+      for (const key of keys) {
+        state.meaningCache[key] = payload;
+      }
+
+      saveMeaningCache();
+    }
+
+    function renderStats() {
+      const total = state.entries.length;
+      const learned = state.entries.filter(isMastered).length;
+      const due = state.entries.filter(isDue).length;
+      const reviewed = state.entries.filter$(entry) => (entry.reviewCount || 0) > 0$.length;
+
+      el.statTotal.textContent = total;
+      el.statLearned.textContent = learned;
+      el.statDue.textContent = due;
+      el.statReviewed.textContent = reviewed;
+    }
+
+    function renderSuggestions() {
+      const words = [...new Set(state.entries.map$(entry) => entry.turkish$)]
+        .sort$(a, b) => a.localeCompare(b, "tr")$;
+      el.suggestions.innerHTML = words.map$(w) => `<option value="${escapeHTML(w)}"></option>`$.join("");
+    }
+
+    function entryCardHTML(entry) {
+      const mastered = isMastered(entry);
+      const due = isDue(entry);
+
+      return `
+        <article class="card ${due ? "due" : ""}">
+          <h3>${escapeHTML(entry.turkish)}</h3>
+          <div class="meaning">${escapeHTML(entry.meaning)}</div>
+          <div class="badges">
+            ${mastered ? `<span class="badge accent">習得済み</span>` : due ? `<span class="badge warn">復習対象</span>` : `<span class="badge">未到来</span>`}
+            ${entry.pos ? `<span class="badge blue">${escapeHTML(entry.pos)}</span>` : ""}
+            ${entry.tag ? `<span class="badge">${escapeHTML(entry.tag)}</span>` : ""}
+            <span class="badge">復習 ${entry.reviewCount || 0}</span>
+            <span class="badge">間隔 ${entry.intervalDays || 0}日</span>
+          </div>
+          \${entry.example ? `<p><strong>例文:</strong> \${escapeHTML(entry.example)}</p>` : ""}
+          \${entry.memo ? `<p><strong>メモ:</strong> \${escapeHTML(entry.memo)}</p>` : ""}
+          <small>次回: ${fmtDate(entry.dueDate)} / ease ${Number(entry.ease || 2.3).toFixed(2)}</small>
+          <div class="actions" style="margin-top:12px">
+            <button type="button" class="ghost small" data-action="speak" data-id="${entry.id}">音声</button>
+            <button type="button" class="ghost small" data-action="review" data-id="${entry.id}">復習</button>
+            <button type="button" class="secondary small" data-action="edit" data-id="${entry.id}">編集</button>
+            <button type="button" class="secondary small" data-action="toggle-mastered" data
