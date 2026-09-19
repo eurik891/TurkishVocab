@@ -1,0 +1,2310 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f766e" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>トルコ語単語・文章管理</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <style>
+    :root {
+      --bg: #f6f8fc;
+      --panel: rgba(255, 255, 255, 0.95);
+      --text: #0f172a;
+      --muted: #64748b;
+      --border: #dbe3ee;
+      --accent: #0f766e;
+      --accent-2: #2563eb;
+      --warn: #d97706;
+      --danger: #dc2626;
+      --soft: #eef4fb;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100%;
+      background:
+        radial-gradient(circle at top left, rgba(15, 118, 110, 0.12), transparent 34%),
+        radial-gradient(circle at top right, rgba(37, 99, 235, 0.10), transparent 26%),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Hiragino Sans", "Yu Gothic", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .app {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 16px;
+      padding-bottom: 28px;
+    }
+
+    header {
+      margin-bottom: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 34px);
+      letter-spacing: 0.02em;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 16px 0 16px;
+    }
+
+    .stat {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .stat .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .stat .value {
+      font-size: 28px;
+      font-weight: 800;
+      line-height: 1;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      box-shadow: var(--shadow);
+      padding: 16px;
+      backdrop-filter: blur(10px);
+    }
+
+    .settings-panel {
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.02fr 0.98fr;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel h2 {
+      margin: 0 0 10px;
+      font-size: 20px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .section-head .muted {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 12px;
+    }
+
+    .row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .settings-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.7fr 0.7fr;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .check-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      padding: 0 2px;
+      color: var(--text);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .check-row input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: var(--accent);
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px 13px;
+      font: inherit;
+      color: var(--text);
+      background: #fff;
+      outline: none;
+      transition: box-shadow 0.15s ease, border-color 0.15s ease;
+    }
+
+    textarea {
+      min-height: 88px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      border-color: rgba(15, 118, 110, 0.55);
+      box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.12);
+    }
+
+    .note {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.45;
+      min-height: 1.2em;
+      white-space: pre-wrap;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 11px 14px;
+      font: inherit;
+      font-weight: 700;
+      color: #fff;
+      background: var(--accent);
+      cursor: pointer;
+      transition: transform 0.08s ease, opacity 0.15s ease, background 0.15s ease;
+    }
+
+    button:hover {
+      opacity: 0.95;
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
+
+    button.secondary {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    button.ghost {
+      background: transparent;
+      color: var(--accent);
+      border: 1px solid rgba(15, 118, 110, 0.25);
+    }
+
+    button.danger {
+      background: var(--danger);
+    }
+
+    button.small {
+      padding: 9px 12px;
+      font-size: 13px;
+      border-radius: 12px;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: progress;
+    }
+
+    .toolbar {
+      display: grid;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .toolbar-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 1fr;
+      gap: 12px;
+    }
+
+    .status {
+      margin-top: 2px;
+      min-height: 1.2em;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .divider {
+      border: 0;
+      border-top: 1px solid var(--border);
+      margin: 14px 0;
+    }
+
+    .card-list {
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.96);
+      padding: 14px;
+    }
+
+    .card.due {
+      border-color: rgba(217, 119, 6, 0.45);
+      box-shadow: 0 0 0 1px rgba(217, 119, 6, 0.08);
+    }
+
+    .card h3 {
+      margin: 0 0 4px;
+      font-size: 20px;
+      word-break: break-word;
+    }
+
+    .card .meaning {
+      color: var(--text);
+      line-height: 1.55;
+      margin-top: 4px;
+      white-space: pre-wrap;
+    }
+
+    .card p {
+      margin: 8px 0 0;
+      line-height: 1.55;
+      white-space: pre-wrap;
+    }
+
+    .card small {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      background: var(--soft);
+      color: #1f2937;
+    }
+
+    .badge.accent {
+      background: rgba(15, 118, 110, 0.12);
+      color: #0f766e;
+    }
+
+    .badge.warn {
+      background: rgba(217, 119, 6, 0.12);
+      color: #a16207;
+    }
+
+    .badge.blue {
+      background: rgba(37, 99, 235, 0.12);
+      color: #1d4ed8;
+    }
+
+    .empty {
+      border: 1px dashed var(--border);
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+      padding: 18px;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.65;
+    }
+
+    .review-box {
+      display: grid;
+      gap: 14px;
+    }
+
+    .review-topbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: end;
+      justify-content: space-between;
+    }
+
+    .review-topbar .left,
+    .review-topbar .right {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: end;
+    }
+
+    .flip-scene {
+      perspective: 1200px;
+      min-height: 340px;
+    }
+
+    .flip-card {
+      position: relative;
+      width: 100%;
+      min-height: 340px;
+      transform-style: preserve-3d;
+      transition: transform 0.45s ease;
+      cursor: pointer;
+    }
+
+    .flip-card.flipped {
+      transform: rotateY(180deg);
+    }
+
+    .face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+      border-radius: 22px;
+      border: 1px solid var(--border);
+      background: #fff;
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .face.back {
+      transform: rotateY(180deg);
+    }
+
+    .review-kind {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .review-question {
+      font-size: clamp(30px, 5vw, 46px);
+      font-weight: 900;
+      line-height: 1.08;
+      letter-spacing: 0.02em;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .review-answer {
+      font-size: clamp(24px, 4.2vw, 40px);
+      font-weight: 900;
+      line-height: 1.12;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+
+    .review-hint {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .review-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .detail-box {
+      border: 1px solid var(--border);
+      background: #f8fafc;
+      border-radius: 18px;
+      padding: 14px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      color: var(--text);
+      min-height: 52px;
+    }
+
+    .detail-title {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .breakdown {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid var(--border);
+      color: #1f2937;
+    }
+
+    .meta-line {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    @media (max-width: 980px) {
+      .grid,
+      .stats,
+      .settings-grid,
+      .toolbar-grid,
+      .row-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .check-row {
+        white-space: normal;
+      }
+
+      .flip-scene,
+      .flip-card {
+        min-height: 380px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <h1>トルコ語単語・文章管理</h1>
+      <p class="subtitle">
+        単語、文章、イディオムをまとめて管理できます。AIで日本語訳、例文の日本語訳、派生語を自動取得し、保存して再利用します。
+      </p>
+    </header>
+
+    <section class="stats" aria-label="統計">
+      <div class="stat">
+        <div class="label">登録数</div>
+        <div class="value" id="statTotal">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">習得済み</div>
+        <div class="value" id="statLearned">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">復習対象</div>
+        <div class="value" id="statDue">0</div>
+      </div>
+      <div class="stat">
+        <div class="label">復習済み</div>
+        <div class="value" id="statReviewed">0</div>
+      </div>
+    </section>
+
+    <section class="panel settings-panel">
+      <div class="section-head">
+        <div>
+          <h2>Gemini設定</h2>
+          <div class="muted">APIキーはこの端末のローカルストレージに保存されます。モデル名はAI Studioの表示に合わせてください。</div>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <div>
+          <label for="apiKey">Gemini APIキー</label>
+          <input id="apiKey" type="password" placeholder="Google AI Studio の APIキー" autocomplete="off" />
+        </div>
+        <div>
+          <label for="modelName">モデル</label>
+          <input id="modelName" type="text" value="gemini-3.8-flash" autocomplete="off" />
+        </div>
+        <div class="check-row">
+          <input id="autoLookup" type="checkbox" />
+          <label for="autoLookup" style="margin:0; font-size:14px; color: var(--text);">入力中に自動取得</label>
+        </div>
+      </div>
+
+      <div class="actions" style="margin-top: 12px;">
+        <button type="button" class="secondary" id="saveSettingsBtn">設定を保存</button>
+      </div>
+      <div class="note" id="settingsNote">APIキー未設定でも、保存済みの項目はそのまま使えます。</div>
+    </section>
+
+    <section class="grid">
+      <article class="panel">
+        <div class="section-head">
+          <div>
+            <h2 id="formTitle">項目を追加</h2>
+            <div class="muted">トルコ語、文章、イディオムを入れられます。AIで意味、例文訳、派生語を補完できます。</div>
+          </div>
+          <button type="button" class="ghost small" id="sampleBtn">サンプル追加</button>
+        </div>
+
+        <form id="wordForm" class="form-grid">
+          <div class="row-2">
+            <div>
+              <label for="inputText">トルコ語（単語・文章・イディオム）</label>
+              <input id="inputText" name="inputText" list="textSuggestions" placeholder="hesap / Merhaba! / gözüm gibi bakmak" autocomplete="off" required />
+              <datalist id="textSuggestions"></datalist>
+            </div>
+            <div>
+              <label for="inputMode">入力タイプ</label>
+              <select id="inputMode" name="inputMode">
+                <option value="auto">自動判定</option>
+                <option value="word">単語</option>
+                <option value="sentence">文章</option>
+                <option value="idiom">イディオム</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div>
+              <label for="meaning">意味（日本語）</label>
+              <input id="meaning" name="meaning" placeholder="こんにちは / 勘定 / 〜を大切にする など" autocomplete="off" required />
+              <div class="note" id="lookupHint">入力すると自動検索します。</div>
+            </div>
+            <div>
+              <label for="exampleTr">例文（トルコ語）</label>
+              <textarea id="exampleTr" name="exampleTr" placeholder="Merhaba! Nasılsın?"></textarea>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div>
+              <label for="exampleJa">例文の日本語訳</label>
+              <textarea id="exampleJa" name="exampleJa" placeholder="こんにちは！元気ですか？"></textarea>
+            </div>
+            <div>
+              <label for="notes">備考</label>
+              <textarea id="notes" name="notes" placeholder="派生語とその意味のみ"></textarea>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button type="submit" id="saveBtn">追加する</button>
+            <button type="button" class="secondary" id="lookupBtn">AIで意味取得</button>
+            <button type="button" class="secondary" id="speakBtn">音声</button>
+            <button type="button" class="secondary" id="cancelEditBtn" hidden>編集を解除</button>
+          </div>
+        </form>
+
+        <div class="toolbar">
+          <div class="toolbar-grid">
+            <div>
+              <label for="searchInput">検索</label>
+              <input id="searchInput" type="search" placeholder="単語・意味・備考で検索" />
+            </div>
+            <div>
+              <label for="filterSelect">表示</label>
+              <select id="filterSelect">
+                <option value="all">すべて</option>
+                <option value="due">復習対象のみ</option>
+                <option value="learned">習得済みのみ</option>
+              </select>
+            </div>
+            <div>
+              <label>データ操作</label>
+              <div class="actions">
+                <button type="button" class="secondary small" id="exportBtn">エクスポート</button>
+                <button type="button" class="secondary small" id="importBtn">インポート</button>
+                <button type="button" class="danger small" id="resetBtn">全削除</button>
+              </div>
+              <input id="importFile" type="file" accept="application/json" hidden />
+            </div>
+          </div>
+          <div class="status" id="status"></div>
+        </div>
+
+        <hr class="divider" />
+
+        <div class="section-head">
+          <div>
+            <h2>一覧</h2>
+            <div class="muted" id="resultCount">0件</div>
+          </div>
+        </div>
+        <div id="wordList" class="card-list"></div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head">
+          <div>
+            <h2>フラッシュカード</h2>
+            <div class="muted">フォルダは使わず、保存済みカードから選んで復習します。タップで裏返り、例文と派生語は必要な時だけ表示します。</div>
+          </div>
+          <button type="button" class="ghost small" id="nextReviewBtn">次のカード</button>
+        </div>
+
+        <div id="reviewArea"></div>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    const STORAGE_KEY = "tvocab_entries_v5";
+    const SETTINGS_KEY = "tvocab_settings_v5";
+    const CACHE_KEY = "tvocab_ai_cache_v5";
+    const REVIEW_KEY = "tvocab_current_review_v5";
+    const UI_KEY = "tvocab_ui_v5";
+
+    const DEFAULT_SETTINGS = {
+      apiKey: "",
+      modelName: "gemini-3.8-flash",
+      autoLookup: false
+    };
+
+    const DEFAULT_UI = {
+      reviewDirection: "tr-ja",
+      reviewFilter: "all"
+    };
+
+    const SAMPLE_ENTRIES = [
+      {
+        inputText: "hesap",
+        inputMode: "word",
+        meaning: "勘定 / 口座 / 計算",
+        exampleTr: "Hesabı ben öderim.",
+        exampleJa: "勘定は私が払います。",
+        notes: "hesaplamak = 計算する",
+        breakdown: [
+          { term: "hesap", meaning: "勘定 / 口座 / 計算" },
+          { term: "hesaplamak", meaning: "計算する" }
+        ],
+        mastered: false
+      },
+      {
+        inputText: "gözüm gibi bakmak",
+        inputMode: "idiom",
+        meaning: "〜をとても大切にする",
+        exampleTr: "Annem çiçeklere gözüm gibi bakıyor.",
+        exampleJa: "母は花をとても大切に育てています。",
+        notes: "gözüm = 私の目\nbakmak = 見る / 世話をする",
+        breakdown: [
+          { term: "gözüm", meaning: "私の目" },
+          { term: "bakmak", meaning: "見る / 世話をする" }
+        ],
+        mastered: false
+      }
+    ];
+
+    function makeId(prefix = "id") {
+      if (window.crypto && typeof window.crypto.randomUUID === "function") {
+        return window.crypto.randomUUID();
+      }
+      return `${prefix}_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`;
+    }
+
+    function localDate(date = new Date()) {
+      const d = new Date(date);
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return d.toISOString().slice(0, 10);
+    }
+
+    function addDays(isoDate, days) {
+      const d = new Date(`${isoDate}T00:00:00`);
+      d.setDate(d.getDate() + days);
+      return localDate(d);
+    }
+
+    function dateValue(isoDate) {
+      const d = new Date(`${isoDate}T00:00:00`);
+      return Number.isNaN(d.getTime()) ? Number.POSITIVE_INFINITY : d.getTime();
+    }
+
+    function todayValue() {
+      return dateValue(localDate());
+    }
+
+    function fmtDate(isoDate) {
+      if (!isoDate) return "—";
+      const d = new Date(`${isoDate}T00:00:00`);
+      if (Number.isNaN(d.getTime())) return "—";
+      return new Intl.DateTimeFormat("ja-JP", { dateStyle: "medium" }).format(d);
+    }
+
+    function escapeHTML(text = "") {
+      const map = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+      return String(text).replace(/[&<>"']/g, (ch) => map[ch]);
+    }
+
+    function normalizeText(text = "") {
+      return String(text)
+        .trim()
+        .normalize("NFKC")
+        .replace(/\s+/g, " ")
+        .toLocaleLowerCase("tr");
+    }
+
+    function foldText(text = "") {
+      return normalizeText(text)
+        .replace(/ç/g, "c")
+        .replace(/ğ/g, "g")
+        .replace(/ı/g, "i")
+        .replace(/ö/g, "o")
+        .replace(/ş/g, "s")
+        .replace(/ü/g, "u")
+        .replace(/İ/g, "i")
+        .replace(/[.,!?;:()"'`~]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function guessCandidates(text = "") {
+      const base = normalizeText(text);
+      const candidates = new Set();
+      if (!base) return [];
+
+      candidates.add(base);
+      candidates.add(foldText(base));
+
+      const suffixes = [
+        "ler", "lar", "dir", "dır", "dur", "dür", "tir", "tır", "tur", "tür",
+        "im", "ım", "um", "üm", "sin", "sın", "sun", "sün",
+        "miz", "mız", "muz", "müz", "iniz", "ınız", "unuz", "ünüz",
+        "de", "da", "te", "ta", "den", "dan", "ten", "tan"
+      ];
+
+      for (const sfx of suffixes) {
+        if (base.length > sfx.length + 2 && base.endsWith(sfx)) {
+          const stripped = base.slice(0, -sfx.length);
+          candidates.add(stripped);
+          candidates.add(foldText(stripped));
+        }
+      }
+
+      return [...candidates];
+    }
+
+    function hashString(text = "") {
+      let hash = 0;
+      const s = String(text);
+      for (let i = 0; i < s.length; i += 1) {
+        hash = (hash << 5) - hash + s.charCodeAt(i);
+        hash |= 0;
+      }
+      return Math.abs(hash);
+    }
+
+    function loadSettings() {
+      try {
+        const raw = localStorage.getItem(SETTINGS_KEY);
+        if (!raw) return { ...DEFAULT_SETTINGS };
+        const parsed = JSON.parse(raw);
+        return { ...DEFAULT_SETTINGS, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+      } catch {
+        return { ...DEFAULT_SETTINGS };
+      }
+    }
+
+    function loadUI() {
+      try {
+        const raw = localStorage.getItem(UI_KEY);
+        if (!raw) return { ...DEFAULT_UI };
+        const parsed = JSON.parse(raw);
+        return { ...DEFAULT_UI, ...(parsed && typeof parsed === "object" ? parsed : {}) };
+      } catch {
+        return { ...DEFAULT_UI };
+      }
+    }
+
+    function loadCache() {
+      try {
+        const raw = localStorage.getItem(CACHE_KEY);
+        if (!raw) return {};
+        const parsed = JSON.parse(raw);
+        return parsed && typeof parsed === "object" ? parsed : {};
+      } catch {
+        return {};
+      }
+    }
+
+    function loadReviewId() {
+      try {
+        return localStorage.getItem(REVIEW_KEY) || "";
+      } catch {
+        return "";
+      }
+    }
+
+    function normalizeEntry(item) {
+      if (!item || typeof item !== "object") return null;
+
+      const inputText = String(item.inputText ?? item.turkish ?? item.word ?? "").trim();
+      const meaning = String(item.meaning ?? item.main_translation ?? "").trim();
+      if (!inputText || !meaning) return null;
+
+      return {
+        id: item.id || makeId("entry"),
+        inputText,
+        inputMode: String(item.inputMode ?? item.kind ?? "auto").trim() || "auto",
+        meaning,
+        exampleTr: String(item.exampleTr ?? item.example_tr ?? item.example ?? "").trim(),
+        exampleJa: String(item.exampleJa ?? item.example_ja ?? "").trim(),
+        notes: String(item.notes ?? "").trim(),
+        breakdown: Array.isArray(item.breakdown)
+          ? item.breakdown.map((b) => ({
+              term: String(b?.term ?? "").trim(),
+              meaning: String(b?.meaning ?? "").trim()
+            })).filter((b) => b.term && b.meaning)
+          : [],
+        createdAt: item.createdAt || new Date().toISOString(),
+        updatedAt: item.updatedAt || new Date().toISOString(),
+        dueDate: item.dueDate || localDate(),
+        intervalDays: Number.isFinite(Number(item.intervalDays)) ? Number(item.intervalDays) : 0,
+        ease: Number.isFinite(Number(item.ease)) ? Number(item.ease) : 2.3,
+        reviewCount: Number.isFinite(Number(item.reviewCount)) ? Number(item.reviewCount) : 0,
+        mastered: Boolean(item.mastered)
+      };
+    }
+
+    function loadEntries() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return [];
+        const parsed = JSON.parse(raw);
+        const source = Array.isArray(parsed)
+          ? parsed
+          : Array.isArray(parsed?.entries)
+            ? parsed.entries
+            : [];
+        return source.map((item) => normalizeEntry(item)).filter(Boolean);
+      } catch {
+        return [];
+      }
+    }
+
+    const state = {
+      settings: loadSettings(),
+      ui: loadUI(),
+      cache: loadCache(),
+      entries: loadEntries(),
+      reviewId: loadReviewId(),
+      reviewFlipped: false,
+      reviewDetail: ""
+    };
+
+    function sanitizeState() {
+      if (!["tr-ja", "ja-tr", "random"].includes(state.ui.reviewDirection)) {
+        state.ui.reviewDirection = "tr-ja";
+      }
+      if (!["all", "due", "learned"].includes(state.ui.reviewFilter)) {
+        state.ui.reviewFilter = "all";
+      }
+      state.entries = state.entries.map((entry) => normalizeEntry(entry)).filter(Boolean);
+      if (!state.reviewId || !state.entries.some((entry) => entry.id === state.reviewId)) {
+        state.reviewId = state.entries[0]?.id || "";
+        saveReviewId();
+      }
+    }
+
+    sanitizeState();
+
+    let editingId = null;
+    let statusTimer = null;
+    let lookupTimer = 0;
+    let lookupRequestId = 0;
+
+    const el = {
+      form: document.getElementById("wordForm"),
+      formTitle: document.getElementById("formTitle"),
+      saveBtn: document.getElementById("saveBtn"),
+      lookupBtn: document.getElementById("lookupBtn"),
+      speakBtn: document.getElementById("speakBtn"),
+      cancelEditBtn: document.getElementById("cancelEditBtn"),
+      inputText: document.getElementById("inputText"),
+      inputMode: document.getElementById("inputMode"),
+      meaning: document.getElementById("meaning"),
+      exampleTr: document.getElementById("exampleTr"),
+      exampleJa: document.getElementById("exampleJa"),
+      notes: document.getElementById("notes"),
+      lookupHint: document.getElementById("lookupHint"),
+      searchInput: document.getElementById("searchInput"),
+      filterSelect: document.getElementById("filterSelect"),
+      wordList: document.getElementById("wordList"),
+      reviewArea: document.getElementById("reviewArea"),
+      resultCount: document.getElementById("resultCount"),
+      status: document.getElementById("status"),
+      statTotal: document.getElementById("statTotal"),
+      statLearned: document.getElementById("statLearned"),
+      statDue: document.getElementById("statDue"),
+      statReviewed: document.getElementById("statReviewed"),
+      sampleBtn: document.getElementById("sampleBtn"),
+      exportBtn: document.getElementById("exportBtn"),
+      importBtn: document.getElementById("importBtn"),
+      importFile: document.getElementById("importFile"),
+      resetBtn: document.getElementById("resetBtn"),
+      nextReviewBtn: document.getElementById("nextReviewBtn"),
+      textSuggestions: document.getElementById("textSuggestions"),
+      apiKey: document.getElementById("apiKey"),
+      modelName: document.getElementById("modelName"),
+      autoLookup: document.getElementById("autoLookup"),
+      saveSettingsBtn: document.getElementById("saveSettingsBtn")
+    };
+
+    function saveEntries() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state.entries));
+    }
+
+    function saveSettings() {
+      localStorage.setItem(SETTINGS_KEY, JSON.stringify(state.settings));
+      renderSettingsNote();
+    }
+
+    function saveCache() {
+      localStorage.setItem(CACHE_KEY, JSON.stringify(state.cache));
+    }
+
+    function saveReviewId() {
+      if (state.reviewId) {
+        localStorage.setItem(REVIEW_KEY, state.reviewId);
+      } else {
+        localStorage.removeItem(REVIEW_KEY);
+      }
+    }
+
+    function saveUI() {
+      localStorage.setItem(UI_KEY, JSON.stringify(state.ui));
+    }
+
+    function setStatus(message) {
+      el.status.textContent = message;
+      clearTimeout(statusTimer);
+      statusTimer = window.setTimeout(() => {
+        el.status.textContent = "";
+      }, 2600);
+    }
+
+    function renderSettingsNote() {
+      const hasKey = Boolean(state.settings.apiKey.trim());
+      const auto = state.settings.autoLookup ? "ON" : "OFF";
+      el.settingsNote.textContent = hasKey
+        ? `APIキーはこの端末に保存されています。自動取得: ${auto}`
+        : "APIキー未設定でも、保存済みの項目はそのまま使えます。";
+    }
+
+    function isMastered(entry) {
+      return Boolean(entry.mastered);
+    }
+
+    function isDue(entry) {
+      if (isMastered(entry)) return false;
+      return dateValue(entry.dueDate) <= todayValue();
+    }
+
+    function sortEntries(a, b) {
+      const aDue = isDue(a) ? 0 : 1;
+      const bDue = isDue(b) ? 0 : 1;
+      if (aDue !== bDue) return aDue - bDue;
+
+      const aDate = dateValue(a.dueDate);
+      const bDate = dateValue(b.dueDate);
+      if (aDate !== bDate) return aDate - bDate;
+
+      return a.inputText.localeCompare(b.inputText, "tr");
+    }
+
+    function getDisplayKind(entry) {
+      const kind = String(entry.inputMode || "auto");
+      if (kind !== "auto") return kind;
+      if (entry.breakdown && entry.breakdown.length > 0 && entry.inputText.includes(" ")) return "idiom";
+      if (entry.inputText.includes(" ")) return "sentence";
+      return "word";
+    }
+
+    function formatBreakdownText(result) {
+      const lines = [];
+      if (Array.isArray(result.breakdown) && result.breakdown.length) {
+        for (const item of result.breakdown) {
+          lines.push(`- ${item.term} = ${item.meaning}`);
+        }
+      }
+      return lines.join("\n").trim();
+    }
+
+    function findLocalHit(text) {
+      const keys = guessCandidates(text);
+
+      for (const key of keys) {
+        if (state.cache[key]) {
+          return { ...state.cache[key], source: "cache" };
+        }
+      }
+
+      for (const entry of state.entries) {
+        const entryKeys = new Set(guessCandidates(entry.inputText));
+        for (const key of keys) {
+          if (entryKeys.has(key)) {
+            return {
+              main_translation: entry.meaning,
+              kind: getDisplayKind(entry),
+              example_tr: entry.exampleTr,
+              example_ja: entry.exampleJa,
+              notes: entry.notes || formatBreakdownText({ breakdown: entry.breakdown || [] }),
+              base_form: entry.inputText,
+              breakdown: entry.breakdown || [],
+              source: "entry"
+            };
+          }
+        }
+      }
+
+      return null;
+    }
+
+    function storeCache(text, result) {
+      const payload = {
+        main_translation: String(result.main_translation ?? result.meaning ?? "").trim(),
+        kind: String(result.kind ?? "auto").trim() || "auto",
+        base_form: String(result.base_form ?? "").trim(),
+        example_tr: String(result.example_tr ?? result.exampleTr ?? "").trim(),
+        example_ja: String(result.example_ja ?? result.exampleJa ?? "").trim(),
+        notes: String(result.notes ?? "").trim(),
+        breakdown: Array.isArray(result.breakdown)
+          ? result.breakdown.map((b) => ({
+              term: String(b?.term ?? "").trim(),
+              meaning: String(b?.meaning ?? "").trim()
+            })).filter((b) => b.term && b.meaning)
+          : [],
+        fetchedAt: new Date().toISOString()
+      };
+
+      const keys = new Set();
+      for (const key of guessCandidates(text)) keys.add(key);
+      if (payload.base_form) {
+        for (const key of guessCandidates(payload.base_form)) keys.add(key);
+      }
+
+      for (const key of keys) {
+        state.cache[key] = payload;
+      }
+      saveCache();
+    }
+
+    function getVoice() {
+      const voices = window.speechSynthesis?.getVoices?.() || [];
+      const trVoices = voices.filter((v) => String(v.lang || "").toLowerCase().startsWith("tr"));
+      return trVoices[0] || voices[0] || null;
+    }
+
+    function speakText(text) {
+      if (!("speechSynthesis" in window)) {
+        alert("このブラウザでは音声読み上げが使えません。");
+        return;
+      }
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "tr-TR";
+      utter.rate = 0.92;
+      utter.pitch = 1.0;
+      const voice = getVoice();
+      if (voice) utter.voice = voice;
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(utter);
+    }
+
+    function extractJsonObject(text) {
+      const cleaned = String(text || "")
+        .replace(/```json/gi, "")
+        .replace(/```/g, "")
+        .trim();
+
+      try {
+        return JSON.parse(cleaned);
+      } catch {
+        const first = cleaned.indexOf("{");
+        const last = cleaned.lastIndexOf("}");
+        if (first >= 0 && last > first) {
+          try {
+            return JSON.parse(cleaned.slice(first, last + 1));
+          } catch {
+            return null;
+          }
+        }
+      }
+      return null;
+    }
+
+    function normalizeAIResult(obj) {
+      if (!obj || typeof obj !== "object") return null;
+
+      const main_translation = String(obj.main_translation ?? obj.meaning ?? "").trim();
+      if (!main_translation) return null;
+
+      return {
+        kind: String(obj.kind ?? "auto").trim() || "auto",
+        main_translation,
+        base_form: String(obj.base_form ?? "").trim(),
+        example_tr: String(obj.example_tr ?? obj.exampleTr ?? "").trim(),
+        example_ja: String(obj.example_ja ?? obj.exampleJa ?? "").trim(),
+        breakdown: Array.isArray(obj.breakdown)
+          ? obj.breakdown.map((b) => ({
+              term: String(b?.term ?? "").trim(),
+              meaning: String(b?.meaning ?? "").trim()
+            })).filter((b) => b.term && b.meaning)
+          : []
+      };
+    }
+
+    function buildPrompt(text, mode) {
+      return [
+        "あなたはトルコ語学習アシスタントです。",
+        "入力は単語、文章、イディオムのどれでもあり得ます。",
+        "出力は必ずJSONのみ。前後の説明文は禁止。",
+        "{",
+        '  "kind": "word|sentence|idiom",',
+        '  "main_translation": "入力全体の自然な日本語訳",',
+        '  "base_form": "基本形が分かるならその形。分からなければ空文字",',
+        '  "example_tr": "トルコ語の例文。必ず1つ",',
+        '  "example_ja": "その日本語訳。必ず1つ",',
+        '  "breakdown": [{"term":"重要語","meaning":"単体の意味"}]',
+        "}",
+        "ルール:",
+        "- main_translation は入力全体の自然で簡潔な訳",
+        "- example_tr と example_ja は必須",
+        "- notes や長い説明は不要",
+        "- breakdown には意味のある単語だけを入れる",
+        "- breakdown には接尾辞や付属語は入れない",
+        "- 単語なら、その語を使った自然な例文を作る",
+        "- 文章やイディオムなら、自然な文脈で使い方が分かる例を作る",
+        `入力タイプ: ${mode || "auto"}`,
+        `入力: ${JSON.stringify(text)}`
+      ].join("\n");
+    }
+
+    async function callGemini(text) {
+      const apiKey = state.settings.apiKey.trim();
+      const modelName = state.settings.modelName.trim() || "gemini-3.8-flash";
+
+      if (!apiKey) throw new Error("Gemini APIキーが未設定です。");
+
+      const response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(modelName)}:generateContent?key=${encodeURIComponent(apiKey)}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [
+              {
+                role: "user",
+                parts: [{ text: buildPrompt(text, el.inputMode.value) }]
+              }
+            ],
+            generationConfig: {
+              temperature: 0.2,
+              maxOutputTokens: 512
+            }
+          })
+        }
+      );
+
+      const data = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = data?.error?.message || `API error ${response.status}`;
+        throw new Error(message);
+      }
+
+      const textParts =
+        data?.candidates?.[0]?.content?.parts?.map((part) => part?.text || "").join("") || "";
+
+      const parsed = normalizeAIResult(extractJsonObject(textParts));
+      if (!parsed) throw new Error("AI応答の解析に失敗しました。");
+      return parsed;
+    }
+
+    function setFieldAuto(elm, on) {
+      elm.dataset.auto = on ? "1" : "0";
+    }
+
+    function isAutoField(elm) {
+      return elm.dataset.auto === "1";
+    }
+
+    function fillAIResult(result, source = "local", force = false) {
+      if (force || !el.meaning.value.trim() || isAutoField(el.meaning)) {
+        el.meaning.value = result.main_translation || "";
+        setFieldAuto(el.meaning, true);
+      }
+
+      if (force || !el.exampleTr.value.trim() || isAutoField(el.exampleTr)) {
+        el.exampleTr.value = result.example_tr || "";
+        setFieldAuto(el.exampleTr, true);
+      }
+
+      if (force || !el.exampleJa.value.trim() || isAutoField(el.exampleJa)) {
+        el.exampleJa.value = result.example_ja || "";
+        setFieldAuto(el.exampleJa, true);
+      }
+
+      const noteText = formatBreakdownText(result);
+      if (noteText && (force || !el.notes.value.trim() || isAutoField(el.notes))) {
+        el.notes.value = noteText;
+        setFieldAuto(el.notes, true);
+      }
+
+      if (result.kind && (force || el.inputMode.value === "auto")) {
+        const mode = String(result.kind).trim();
+        if (["word", "sentence", "idiom"].includes(mode)) {
+          el.inputMode.value = mode;
+        }
+      }
+
+      if (result.main_translation) {
+        el.lookupHint.textContent = source === "entry"
+          ? `保存済み候補: ${result.main_translation}`
+          : `AI候補: ${result.main_translation}`;
+      }
+    }
+
+    async function lookupMeaningAndFill({ forceRemote = false } = {}) {
+      const text = el.inputText.value.trim();
+      if (!text) {
+        el.lookupHint.textContent = "入力してください。";
+        return;
+      }
+
+      const local = findLocalHit(text);
+      if (local && !forceRemote) {
+        fillAIResult(local, local.source || "local", false);
+        setStatus(local.source === "cache" ? "キャッシュから補完しました。" : "保存済みデータから補完しました。");
+        return;
+      }
+
+      if (!state.settings.apiKey.trim()) {
+        el.lookupHint.textContent = "Gemini APIキーを設定してください。";
+        return;
+      }
+
+      const requestId = ++lookupRequestId;
+      el.lookupBtn.disabled = true;
+      el.lookupBtn.textContent = "取得中...";
+
+      try {
+        el.lookupHint.textContent = "Geminiで取得中...";
+        const result = await callGemini(text);
+        if (requestId !== lookupRequestId) return;
+        storeCache(text, result);
+        fillAIResult(result, "gemini", true);
+        setStatus("AIから取得しました。");
+      } catch (error) {
+        if (requestId !== lookupRequestId) return;
+        el.lookupHint.textContent = `取得失敗: ${error.message}`;
+        setStatus(`取得失敗: ${error.message}`);
+      } finally {
+        if (requestId === lookupRequestId) {
+          el.lookupBtn.disabled = false;
+          el.lookupBtn.textContent = "AIで意味取得";
+        }
+      }
+    }
+
+    function resetAutoFieldsOnTextChange() {
+      if (editingId) return;
+      el.meaning.value = "";
+      el.exampleTr.value = "";
+      el.exampleJa.value = "";
+      el.notes.value = "";
+      setFieldAuto(el.meaning, false);
+      setFieldAuto(el.exampleTr, false);
+      setFieldAuto(el.exampleJa, false);
+      setFieldAuto(el.notes, false);
+    }
+
+    function handleTextInput() {
+      if (editingId) return;
+
+      const text = el.inputText.value.trim();
+      if (!text) {
+        el.lookupHint.textContent = "入力すると自動検索します。";
+        return;
+      }
+
+      resetAutoFieldsOnTextChange();
+
+      const local = findLocalHit(text);
+      if (local) {
+        fillAIResult(local, local.source || "local", false);
+        return;
+      }
+
+      if (!state.settings.apiKey.trim()) {
+        el.lookupHint.textContent = "APIキーを設定すると自動取得できます。";
+        return;
+      }
+
+      if (!state.settings.autoLookup) {
+        el.lookupHint.textContent = "自動取得はOFFです。必要な時だけ AIで意味取得 を押してください。";
+        return;
+      }
+
+      if (lookupTimer) clearTimeout(lookupTimer);
+      lookupTimer = window.setTimeout(() => {
+        lookupMeaningAndFill({ forceRemote: false });
+      }, 700);
+    }
+
+    function currentEntryFromForm() {
+      return normalizeEntry({
+        id: editingId || makeId("entry"),
+        inputText: el.inputText.value,
+        inputMode: el.inputMode.value,
+        meaning: el.meaning.value,
+        exampleTr: el.exampleTr.value,
+        exampleJa: el.exampleJa.value,
+        notes: el.notes.value,
+        breakdown: [],
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        dueDate: localDate(),
+        intervalDays: 0,
+        ease: 2.3,
+        reviewCount: 0,
+        mastered: false
+      });
+    }
+
+    function hasExamplePair() {
+      const tr = el.exampleTr.value.trim();
+      const ja = el.exampleJa.value.trim();
+      return !tr && !ja ? true : Boolean(tr && ja);
+    }
+
+    function saveEntry(entry) {
+      const index = state.entries.findIndex((x) => x.id === entry.id);
+      const old = index >= 0 ? state.entries[index] : null;
+
+      const finalEntry = {
+        ...entry,
+        createdAt: old?.createdAt || entry.createdAt || new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        dueDate: old?.dueDate || entry.dueDate || localDate(),
+        intervalDays: old?.intervalDays ?? entry.intervalDays ?? 0,
+        ease: old?.ease ?? entry.ease ?? 2.3,
+        reviewCount: old?.reviewCount ?? entry.reviewCount ?? 0,
+        mastered: old?.mastered ?? entry.mastered ?? false
+      };
+
+      if (index >= 0) {
+        state.entries[index] = finalEntry;
+      } else {
+        state.entries.unshift(finalEntry);
+      }
+
+      storeCache(finalEntry.inputText, {
+        main_translation: finalEntry.meaning,
+        kind: finalEntry.inputMode,
+        base_form: finalEntry.inputText,
+        example_tr: finalEntry.exampleTr,
+        example_ja: finalEntry.exampleJa,
+        notes: finalEntry.notes,
+        breakdown: finalEntry.breakdown
+      });
+
+      saveEntries();
+      renderAll();
+    }
+
+    function clearForm() {
+      editingId = null;
+      el.form.reset();
+      el.inputMode.value = "auto";
+      el.lookupHint.textContent = "入力すると自動検索します。";
+      setFieldAuto(el.meaning, false);
+      setFieldAuto(el.exampleTr, false);
+      setFieldAuto(el.exampleJa, false);
+      setFieldAuto(el.notes, false);
+      refreshFormMode();
+    }
+
+    function fillForm(entry) {
+      editingId = entry.id;
+      el.inputText.value = entry.inputText || "";
+      el.inputMode.value = entry.inputMode || "auto";
+      el.meaning.value = entry.meaning || "";
+      el.exampleTr.value = entry.exampleTr || "";
+      el.exampleJa.value = entry.exampleJa || "";
+      el.notes.value = entry.notes || "";
+      setFieldAuto(el.meaning, false);
+      setFieldAuto(el.exampleTr, false);
+      setFieldAuto(el.exampleJa, false);
+      setFieldAuto(el.notes, false);
+      el.lookupHint.textContent = "編集中は自動上書きしません。";
+      refreshFormMode();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      el.inputText.focus();
+    }
+
+    function refreshFormMode() {
+      if (editingId) {
+        el.formTitle.textContent = "項目を編集";
+        el.saveBtn.textContent = "更新する";
+        el.cancelEditBtn.hidden = false;
+      } else {
+        el.formTitle.textContent = "項目を追加";
+        el.saveBtn.textContent = "追加する";
+        el.cancelEditBtn.hidden = true;
+      }
+    }
+
+    function getFilteredEntries() {
+      let items = [...state.entries];
+
+      const query = foldText(el.searchInput.value);
+      if (query) {
+        items = items.filter((entry) => {
+          const haystack = [
+            entry.inputText,
+            entry.meaning,
+            entry.exampleTr,
+            entry.exampleJa,
+            entry.notes,
+            ...(entry.breakdown || []).flatMap((b) => [b.term, b.meaning])
+          ].map(foldText).join(" ");
+          return haystack.includes(query);
+        });
+      }
+
+      const filter = el.filterSelect.value;
+      if (filter === "due") items = items.filter(isDue);
+      if (filter === "learned") items = items.filter(isMastered);
+
+      return items.sort(sortEntries);
+    }
+
+    function renderStats() {
+      el.statTotal.textContent = state.entries.length;
+      el.statLearned.textContent = state.entries.filter(isMastered).length;
+      el.statDue.textContent = state.entries.filter(isDue).length;
+      el.statReviewed.textContent = state.entries.filter((entry) => (entry.reviewCount || 0) > 0).length;
+    }
+
+    function renderSuggestions() {
+      const words = [...new Set(state.entries.map((entry) => entry.inputText))].sort((a, b) => a.localeCompare(b, "tr"));
+      el.textSuggestions.innerHTML = words.map((w) => `<option value="${escapeHTML(w)}"></option>`).join("");
+    }
+
+    function entryCardHTML(entry) {
+      const mastered = isMastered(entry);
+      const due = isDue(entry);
+      const kind = getDisplayKind(entry);
+      const breakdownHTML = (entry.breakdown || []).length
+        ? `<div class="breakdown">${entry.breakdown.map((b) => `<span class="chip">${escapeHTML(b.term)} = ${escapeHTML(b.meaning)}</span>`).join("")}</div>`
+        : "";
+
+      return `
+        <article class="card ${due ? "due" : ""}">
+          <h3>${escapeHTML(entry.inputText)}</h3>
+          <div class="meaning">${escapeHTML(entry.meaning)}</div>
+          <div class="badges">
+            ${mastered ? `<span class="badge accent">習得済み</span>` : due ? `<span class="badge warn">復習対象</span>` : `<span class="badge">未到来</span>`}
+            <span class="badge blue">${escapeHTML(kind)}</span>
+            <span class="badge">復習 ${entry.reviewCount || 0}</span>
+            <span class="badge">間隔 ${entry.intervalDays || 0}日</span>
+          </div>
+          ${entry.exampleTr ? `<p><strong>例文:</strong> ${escapeHTML(entry.exampleTr)}</p>` : ""}
+          ${entry.exampleJa ? `<p><strong>訳:</strong> ${escapeHTML(entry.exampleJa)}</p>` : ""}
+          ${entry.notes ? `<p><strong>備考:</strong> ${escapeHTML(entry.notes)}</p>` : ""}
+          ${breakdownHTML}
+          <small>次回: ${fmtDate(entry.dueDate)} / ease ${Number(entry.ease || 2.3).toFixed(2)}</small>
+          <div class="actions" style="margin-top:12px">
+            <button type="button" class="ghost small" data-action="speak" data-id="${entry.id}">音声</button>
+            <button type="button" class="ghost small" data-action="review" data-id="${entry.id}">復習</button>
+            <button type="button" class="secondary small" data-action="edit" data-id="${entry.id}">編集</button>
+            <button type="button" class="secondary small" data-action="toggle-mastered" data-id="${entry.id}">
+              ${mastered ? "未習得に戻す" : "習得済みにする"}
+            </button>
+            <button type="button" class="danger small" data-action="delete" data-id="${entry.id}">削除</button>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderList() {
+      const items = getFilteredEntries();
+      el.resultCount.textContent = `${items.length}件`;
+
+      el.wordList.innerHTML = items.length
+        ? items.map(entryCardHTML).join("")
+        : `<div class="empty">まだ項目がありません。左側から追加してください。<br>「サンプル追加」で例データを入れることもできます。</div>`;
+    }
+
+    function getReviewPool() {
+      let pool = [...state.entries];
+
+      if (state.ui.reviewFilter === "due") pool = pool.filter(isDue);
+      if (state.ui.reviewFilter === "learned") pool = pool.filter(isMastered);
+
+      return pool.sort(sortEntries);
+    }
+
+    function getReviewDirectionForEntry(entry) {
+      const mode = state.ui.reviewDirection;
+      if (mode === "tr-ja" || mode === "ja-tr") return mode;
+      return hashString(entry.id + String(entry.reviewCount || 0)) % 2 === 0 ? "tr-ja" : "ja-tr";
+    }
+
+    function reviewCardData(entry) {
+      const direction = getReviewDirectionForEntry(entry);
+      if (direction === "tr-ja") {
+        return {
+          direction,
+          questionLabel: "トルコ語",
+          questionText: entry.inputText,
+          answerLabel: "日本語",
+          answerText: entry.meaning
+        };
+      }
+      return {
+        direction,
+        questionLabel: "日本語",
+        questionText: entry.meaning,
+        answerLabel: "トルコ語",
+        answerText: entry.inputText
+      };
+    }
+
+    function pickReviewTarget() {
+      if (state.reviewId) {
+        const pool = getReviewPool();
+        const existing = pool.find((entry) => entry.id === state.reviewId);
+        if (existing) return existing;
+      }
+
+      const pool = getReviewPool();
+      if (!pool.length) return null;
+
+      const due = pool.find(isDue);
+      if (due) return due;
+
+      const notMastered = pool.find((entry) => !isMastered(entry));
+      if (notMastered) return notMastered;
+
+      return pool[0];
+    }
+
+    function renderReview() {
+      const target = pickReviewTarget();
+
+      if (!target) {
+        el.reviewArea.innerHTML = `
+          <div class="empty">
+            まだ項目がありません。<br>
+            まずは左側で追加してください。
+          </div>
+        `;
+        return;
+      }
+
+      state.reviewId = target.id;
+      saveReviewId();
+
+      const stateLabel = isMastered(target)
+        ? "習得済み"
+        : isDue(target)
+          ? "今日復習"
+          : `次回 ${fmtDate(target.dueDate)}`;
+
+      const badgeClass = isMastered(target)
+        ? "accent"
+        : isDue(target)
+          ? "warn"
+          : "";
+
+      const cardData = reviewCardData(target);
+
+      const detailHTML = state.reviewDetail === "example"
+        ? `
+          <div>
+            <div class="detail-title">例文</div>
+            <div class="detail-box">${escapeHTML(target.exampleTr || "例文なし")}${target.exampleJa ? `\n\n${escapeHTML(target.exampleJa)}` : ""}</div>
+          </div>
+        `
+        : state.reviewDetail === "breakdown"
+          ? `
+            <div>
+              <div class="detail-title">派生語</div>
+              <div class="detail-box">
+                ${
+                  (target.breakdown || []).length
+                    ? `<div class="breakdown">${target.breakdown.map((b) => `<span class="chip">${escapeHTML(b.term)} = ${escapeHTML(b.meaning)}</span>`).join("")}</div>`
+                    : escapeHTML(target.notes || "派生語なし")
+                }
+              </div>
+            </div>
+          `
+          : "";
+
+      el.reviewArea.innerHTML = `
+        <div class="review-box">
+          <div class="review-topbar">
+            <div class="left">
+              <div>
+                <label for="reviewDirectionSelect">出題方向</label>
+                <select id="reviewDirectionSelect">
+                  <option value="tr-ja">トルコ語 → 日本語</option>
+                  <option value="ja-tr">日本語 → トルコ語</option>
+                  <option value="random">ランダム</option>
+                </select>
+              </div>
+              <div>
+                <label for="reviewFilterSelect">対象</label>
+                <select id="reviewFilterSelect">
+                  <option value="all">すべて</option>
+                  <option value="due">復習対象のみ</option>
+                  <option value="learned">習得済みのみ</option>
+                </select>
+              </div>
+            </div>
+            <div class="right">
+              <button type="button" class="secondary small" id="reviewRevealBtn">${state.reviewFlipped ? "表に戻す" : "裏返す"}</button>
+              <button type="button" class="secondary small" id="reviewResetBtn">戻す</button>
+            </div>
+          </div>
+
+          <div class="flip-scene">
+            <div class="flip-card ${state.reviewFlipped ? "flipped" : ""}" id="reviewFlipCard">
+              <div class="face front">
+                <div>
+                  <div class="review-kind">
+                    <span class="badge ${badgeClass}">${escapeHTML(stateLabel)}</span>
+                    <span class="badge blue">${escapeHTML(cardData.questionLabel)}</span>
+                  </div>
+                  <div class="review-question">${escapeHTML(cardData.questionText)}</div>
+                  <div class="review-hint">タップで裏返します</div>
+                </div>
+                <div class="review-hint">例文と派生語は、裏返したあとにボタンで表示します</div>
+              </div>
+
+              <div class="face back">
+                <div>
+                  <div class="review-kind">
+                    <span class="badge ${badgeClass}">${escapeHTML(stateLabel)}</span>
+                    <span class="badge blue">${escapeHTML(cardData.answerLabel)}</span>
+                  </div>
+                  <div class="review-answer">${escapeHTML(cardData.answerText)}</div>
+                  <div class="review-hint">タップで表に戻せます</div>
+                </div>
+
+                <div class="review-actions">
+                  <button type="button" class="ghost small" data-review-action="speak" data-id="${target.id}">音声</button>
+                  <button type="button" class="secondary small" data-review-action="example" data-id="${target.id}">例文</button>
+                  <button type="button" class="secondary small" data-review-action="breakdown" data-id="${target.id}">派生語</button>
+                  <button type="button" class="secondary small" data-review-action="again" data-id="${target.id}">Again</button>
+                  <button type="button" class="secondary small" data-review-action="good" data-id="${target.id}">Good</button>
+                  <button type="button" class="secondary small" data-review-action="easy" data-id="${target.id}">Easy</button>
+                  <button type="button" class="ghost small" data-review-action="next">次のカード</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          ${detailHTML}
+        </div>
+      `;
+
+      const reviewFlipCard = el.reviewArea.querySelector("#reviewFlipCard");
+      const reviewDirectionSelect = el.reviewArea.querySelector("#reviewDirectionSelect");
+      const reviewFilterSelect = el.reviewArea.querySelector("#reviewFilterSelect");
+      const reviewRevealBtn = el.reviewArea.querySelector("#reviewRevealBtn");
+      const reviewResetBtn = el.reviewArea.querySelector("#reviewResetBtn");
+
+      reviewDirectionSelect.value = state.ui.reviewDirection;
+      reviewFilterSelect.value = state.ui.reviewFilter;
+
+      reviewFlipCard.addEventListener("click", (event) => {
+        if (event.target.closest("button")) return;
+        state.reviewFlipped = !state.reviewFlipped;
+        state.reviewDetail = "";
+        renderReview();
+      });
+
+      reviewDirectionSelect.addEventListener("change", (event) => {
+        state.ui.reviewDirection = event.target.value;
+        saveUI();
+        state.reviewFlipped = false;
+        state.reviewDetail = "";
+        renderReview();
+      });
+
+      reviewFilterSelect.addEventListener("change", (event) => {
+        state.ui.reviewFilter = event.target.value;
+        saveUI();
+        state.reviewFlipped = false;
+        state.reviewDetail = "";
+        renderReview();
+      });
+
+      reviewRevealBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        state.reviewFlipped = !state.reviewFlipped;
+        state.reviewDetail = "";
+        renderReview();
+      });
+
+      reviewResetBtn.addEventListener("click", (event) => {
+        event.stopPropagation();
+        state.reviewFlipped = false;
+        state.reviewDetail = "";
+        renderReview();
+      });
+
+      el.reviewArea.querySelectorAll("[data-review-action]").forEach((button) => {
+        button.addEventListener("click", (event) => {
+          event.stopPropagation();
+          const action = button.dataset.reviewAction;
+          const id = button.dataset.id;
+          const entry = state.entries.find((item) => item.id === id);
+          if (!entry && action !== "next") return;
+
+          if (action === "example" || action === "breakdown") {
+            state.reviewDetail = state.reviewDetail === action ? "" : action;
+            renderReview();
+            return;
+          }
+
+          if (action === "speak" && entry) {
+            speakText(entry.inputText);
+            return;
+          }
+
+          if (action === "next") {
+            nextReview();
+            return;
+          }
+
+          if (entry && (action === "again" || action === "good" || action === "easy")) {
+            advanceReviewAfterRating(id, action);
+          }
+        });
+      });
+    }
+
+    function renderAll() {
+      renderStats();
+      renderSettingsNote();
+      renderSuggestions();
+      renderList();
+      renderReview();
+      refreshFormMode();
+    }
+
+    function addSamples() {
+      const existing = new Set(state.entries.map((entry) => `${foldText(entry.inputText)}::${foldText(entry.meaning)}`));
+      const added = SAMPLE_ENTRIES
+        .map((item) => normalizeEntry({ ...item, id: makeId("entry") }))
+        .filter((item) => item && !existing.has(`${foldText(item.inputText)}::${foldText(item.meaning)}`));
+
+      if (!added.length) {
+        setStatus("サンプルはすでに追加済みです。");
+        return;
+      }
+
+      state.entries = [...added, ...state.entries];
+      for (const entry of added) {
+        storeCache(entry.inputText, {
+          main_translation: entry.meaning,
+          kind: entry.inputMode,
+          base_form: entry.inputText,
+          example_tr: entry.exampleTr,
+          example_ja: entry.exampleJa,
+          notes: entry.notes,
+          breakdown: entry.breakdown
+        });
+      }
+
+      saveEntries();
+      renderAll();
+      setStatus(`${added.length}件のサンプルを追加しました。`);
+    }
+
+    function applyDelete(id) {
+      const target = state.entries.find((entry) => entry.id === id);
+      if (!target) return;
+      if (!window.confirm(`「${target.inputText}」を削除しますか？`)) return;
+
+      state.entries = state.entries.filter((entry) => entry.id !== id);
+      if (editingId === id) clearForm();
+      if (state.reviewId === id) {
+        state.reviewId = "";
+        saveReviewId();
+      }
+      saveEntries();
+      renderAll();
+      setStatus("削除しました。");
+    }
+
+    function toggleMastered(id) {
+      const index = state.entries.findIndex((entry) => entry.id === id);
+      if (index < 0) return;
+
+      const entry = state.entries[index];
+      state.entries[index] = {
+        ...entry,
+        mastered: !entry.mastered,
+        dueDate: !entry.mastered ? addDays(localDate(), 365) : localDate(),
+        updatedAt: new Date().toISOString()
+      };
+
+      saveEntries();
+      renderAll();
+      setStatus(!entry.mastered ? "習得済みにしました。" : "未習得に戻しました。");
+    }
+
+    function scheduleReview(entry, quality) {
+      const today = localDate();
+      let interval = Number(entry.intervalDays) || 0;
+      let ease = Number(entry.ease) || 2.3;
+
+      if (quality === "again") {
+        interval = 1;
+        ease = Math.max(1.3, ease - 0.2);
+      } else if (quality === "good") {
+        interval = interval <= 0 ? 1 : Math.max(1, Math.round(interval * ease));
+        ease = Math.min(3.0, ease + 0.05);
+      } else if (quality === "easy") {
+        interval = interval <= 0 ? 2 : Math.max(2, Math.round(interval * ease * 1.3));
+        ease = Math.min(3.0, ease + 0.15);
+      }
+
+      const mastered = quality === "easy" && (entry.reviewCount || 0) >= 2;
+
+      return {
+        ...entry,
+        intervalDays: interval,
+        ease,
+        reviewCount: (entry.reviewCount || 0) + 1,
+        dueDate: addDays(today, interval),
+        mastered: mastered ? true : entry.mastered,
+        updatedAt: new Date().toISOString()
+      };
+    }
+
+    function nextReview() {
+      state.reviewId = "";
+      saveReviewId();
+      state.reviewFlipped = false;
+      state.reviewDetail = "";
+      renderReview();
+    }
+
+    function advanceReviewAfterRating(id, quality) {
+      const index = state.entries.findIndex((entry) => entry.id === id);
+      if (index < 0) return;
+
+      state.entries[index] = scheduleReview(state.entries[index], quality);
+      saveEntries();
+      state.reviewId = "";
+      saveReviewId();
+      state.reviewFlipped = false;
+      state.reviewDetail = "";
+      renderAll();
+
+      setStatus(
+        quality === "again"
+          ? "復習間隔を短くしました。"
+          : quality === "good"
+            ? "復習を進めました。"
+            : "次回の間隔を長くしました。"
+      );
+    }
+
+    function speakCurrent() {
+      const text = el.inputText.value.trim();
+      if (text) {
+        speakText(text);
+        return;
+      }
+      const current = state.entries.find((entry) => entry.id === state.reviewId);
+      if (current) speakText(current.inputText);
+    }
+
+    function syncSettingsFromUI() {
+      state.settings.apiKey = el.apiKey.value.trim();
+      state.settings.modelName = el.modelName.value.trim() || "gemini-3.8-flash";
+      state.settings.autoLookup = el.autoLookup.checked;
+      saveSettings();
+      saveUI();
+    }
+
+    function populateSettingsUI() {
+      el.apiKey.value = state.settings.apiKey || "";
+      el.modelName.value = state.settings.modelName || "gemini-3.8-flash";
+      el.autoLookup.checked = Boolean(state.settings.autoLookup);
+      el.filterSelect.value = state.ui.reviewFilter || "all";
+    }
+
+    function exportData() {
+      const blob = new Blob(
+        [JSON.stringify({
+          entries: state.entries,
+          settings: state.settings,
+          ui: state.ui,
+          cache: state.cache
+        }, null, 2)],
+        { type: "application/json" }
+      );
+
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `tvocab-${localDate().replace(/-/g, "")}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("エクスポートしました。");
+    }
+
+    function importData(file) {
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        try {
+          const parsed = JSON.parse(String(reader.result || ""));
+          const sourceEntries = Array.isArray(parsed)
+            ? parsed
+            : Array.isArray(parsed?.entries)
+              ? parsed.entries
+              : null;
+
+          if (!sourceEntries) {
+            alert("JSON 配列、または { entries: [...] } 形式のファイルを読み込んでください。");
+            return;
+          }
+
+          const importedEntries = sourceEntries.map((item) => normalizeEntry(item)).filter(Boolean);
+          const importedSettings = parsed?.settings && typeof parsed.settings === "object" ? parsed.settings : null;
+          const importedUI = parsed?.ui && typeof parsed.ui === "object" ? parsed.ui : null;
+          const importedCache = parsed?.cache && typeof parsed.cache === "object" ? parsed.cache : null;
+
+          if (!importedEntries.length) {
+            alert("有効なデータが見つかりませんでした。");
+            return;
+          }
+
+          const ok = confirm(`"${file.name}" からデータを読み込みます。\n現在のデータは置き換えます。`);
+          if (!ok) return;
+
+          if (importedSettings) {
+            state.settings = { ...state.settings, ...importedSettings };
+          }
+
+          if (importedUI) {
+            state.ui = { ...state.ui, ...importedUI };
+          }
+
+          state.cache = importedCache || {};
+
+          state.entries = importedEntries.map((entry) => normalizeEntry(entry));
+
+          for (const entry of state.entries) {
+            storeCache(entry.inputText, {
+              main_translation: entry.meaning,
+              kind: entry.inputMode,
+              base_form: entry.inputText,
+              example_tr: entry.exampleTr,
+              example_ja: entry.exampleJa,
+              notes: entry.notes,
+              breakdown: entry.breakdown
+            });
+          }
+
+          state.reviewId = state.entries[0]?.id || "";
+          state.reviewFlipped = false;
+          state.reviewDetail = "";
+          saveEntries();
+          saveSettings();
+          saveUI();
+          saveCache();
+          saveReviewId();
+          renderAll();
+          setStatus("インポートしました。");
+        } catch {
+          alert("読み込みに失敗しました。JSON 形式を確認してください。");
+        } finally {
+          el.importFile.value = "";
+        }
+      };
+
+      reader.readAsText(file);
+    }
+
+    function resetAll() {
+      const ok = confirm("すべての項目を削除しますか？ この操作は元に戻せません。");
+      if (!ok) return;
+
+      state.entries = [];
+      state.cache = {};
+      state.reviewId = "";
+      state.reviewFlipped = false;
+      state.reviewDetail = "";
+      editingId = null;
+      saveEntries();
+      saveCache();
+      saveReviewId();
+      renderAll();
+      setStatus("すべて削除しました。");
+    }
+
+    function validateExamplePair() {
+      const tr = el.exampleTr.value.trim();
+      const ja = el.exampleJa.value.trim();
+      return !tr && !ja ? true : Boolean(tr && ja);
+    }
+
+    function handleSubmit(event) {
+      event.preventDefault();
+
+      const entry = currentEntryFromForm();
+      if (!entry) {
+        alert("入力内容を確認してください。");
+        return;
+      }
+
+      if (!entry.inputText) {
+        alert("トルコ語・文章・イディオムを入力してください。");
+        return;
+      }
+
+      if (!entry.meaning) {
+        alert("意味を入れてください。");
+        return;
+      }
+
+      if (!validateExamplePair()) {
+        alert("例文のトルコ語と日本語訳は、両方そろえてください。");
+        return;
+      }
+
+      if (!entry.exampleTr || !entry.exampleJa) {
+        const ok = confirm("例文のトルコ語と日本語訳が空です。AIで補完してから保存すると便利です。今のまま保存しますか？");
+        if (!ok) return;
+      }
+
+      if (editingId) {
+        const old = state.entries.find((x) => x.id === editingId);
+        entry.createdAt = old?.createdAt || entry.createdAt;
+        entry.reviewCount = old?.reviewCount || 0;
+        entry.intervalDays = old?.intervalDays || 0;
+        entry.ease = old?.ease || 2.3;
+        entry.dueDate = old?.dueDate || localDate();
+        entry.mastered = old?.mastered || false;
+        entry.breakdown = old?.breakdown || [];
+      }
+
+      saveEntry({
+        ...entry,
+        id: editingId || entry.id
+      });
+
+      const wasEditing = Boolean(editingId);
+      clearForm();
+      setStatus(wasEditing ? "更新しました。" : "追加しました。");
+    }
+
+    function renderAll() {
+      renderStats();
+      renderSuggestions();
+      renderList();
+      renderReview();
+      refreshFormMode();
+    }
+
+    el.form.addEventListener("submit", handleSubmit);
+
+    el.cancelEditBtn.addEventListener("click", () => {
+      clearForm();
+      setStatus("編集を解除しました。");
+    });
+
+    el.inputText.addEventListener("input", handleTextInput);
+    el.meaning.addEventListener("input", () => setFieldAuto(el.meaning, false));
+    el.exampleTr.addEventListener("input", () => setFieldAuto(el.exampleTr, false));
+    el.exampleJa.addEventListener("input", () => setFieldAuto(el.exampleJa, false));
+    el.notes.addEventListener("input", () => setFieldAuto(el.notes, false));
+
+    el.lookupBtn.addEventListener("click", () => {
+      lookupMeaningAndFill({ forceRemote: true });
+    });
+
+    el.speakBtn.addEventListener("click", speakCurrent);
+
+    el.searchInput.addEventListener("input", renderList);
+    el.filterSelect.addEventListener("change", (event) => {
+      state.ui.reviewFilter = event.target.value;
+      saveUI();
+      renderList();
+      renderReview();
+    });
+
+    el.wordList.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-action]");
+      if (!button) return;
+
+      const { action, id } = button.dataset;
+      const entry = state.entries.find((item) => item.id === id);
+      if (!entry) return;
+
+      if (action === "edit") {
+        fillForm(entry);
+        setStatus("編集モードにしました。");
+      }
+
+      if (action === "delete") {
+        applyDelete(id);
+      }
+
+      if (action === "toggle-mastered") {
+        toggleMastered(id);
+      }
+
+      if (action === "review") {
+        state.reviewId = id;
+        saveReviewId();
+        state.reviewFlipped = false;
+        state.reviewDetail = "";
+        renderReview();
+      }
+
+      if (action === "speak") {
+        speakText(entry.inputText);
+      }
+    });
+
+    el.wordList.addEventListener("change", (event) => {
+      const select = event.target.closest('select[data-action="move-folder"]');
+      if (!select) return;
+    });
+
+    el.sampleBtn.addEventListener("click", () => {
+      const existing = new Set(state.entries.map((entry) => `${foldText(entry.inputText)}::${foldText(entry.meaning)}`));
+      const added = SAMPLE_ENTRIES
+        .map((item) => normalizeEntry({ ...item, id: makeId("entry") }))
+        .filter((item) => item && !existing.has(`${foldText(item.inputText)}::${foldText(item.meaning)}`));
+
+      if (!added.length) {
+        setStatus("サンプルはすでに追加済みです。");
+        return;
+      }
+
+      state.entries = [...added, ...state.entries];
+      for (const entry of added) {
+        storeCache(entry.inputText, {
+          main_translation: entry.meaning,
+          kind: entry.inputMode,
+          base_form: entry.inputText,
+          example_tr: entry.exampleTr,
+          example_ja: entry.exampleJa,
+          notes: entry.notes,
+          breakdown: entry.breakdown
+        });
+      }
+
+      saveEntries();
+      renderAll();
+      setStatus(`${added.length}件のサンプルを追加しました。`);
+    });
+
+    el.exportBtn.addEventListener("click", exportData);
+    el.importBtn.addEventListener("click", () => el.importFile.click());
+    el.importFile.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (file) importData(file);
+    });
+
+    el.resetBtn.addEventListener("click", resetAll);
+    el.nextReviewBtn.addEventListener("click", () => {
+      nextReview();
+      setStatus("次のカードを表示しました。");
+    });
+
+    el.saveSettingsBtn.addEventListener("click", () => {
+      syncSettingsFromUI();
+      setStatus("設定を保存しました。");
+    });
+
+    el.apiKey.addEventListener("input", syncSettingsFromUI);
+    el.modelName.addEventListener("input", syncSettingsFromUI);
+    el.autoLookup.addEventListener("change", syncSettingsFromUI);
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    populateSettingsUI();
+    renderSettingsNote();
+    renderAll();
+
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>
